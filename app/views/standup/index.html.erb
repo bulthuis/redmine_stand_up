@@ -1,0 +1,162 @@
+<% html_title "Stand-Up" -%>
+
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'stand_up', :plugin => 'redmine_stand_up' %>
+<% end %>
+
+<h2>Stand-Up</h2>
+
+<% if @groups.count == 0 %>
+	
+	<p class="nodata">You are not in any groups. To use the Stand-Up page you must be a member of a group. To be added to a group, contact your administrator.</p>
+
+<% elsif @groups.count == 1 || params[:group] %>
+
+	<% @group.users.sort_by{rand}.each do |user| %>
+		<% standup = Standup.new(user, Date.today) %>
+
+		<h2><%= avatar user, :size => "50" %> <%=h user.name %></h2>
+
+		<div class="yesterday box">
+
+			<h3>
+				<% if standup.yesterdays_activity.date == standup.date - 1 %>
+					Yesterday
+				<% else %>
+					<span style="text-decoration: line-through;">Yesterday</span>
+					<%= standup.yesterdays_activity.date.to_s %>
+				<% end %>
+			</h3>
+
+			<% if standup.yesterdays_activity.project_activities.count > 0 %>
+
+				<ul>
+
+					<% standup.yesterdays_activity.project_activities.each do |project_activity| %>
+
+							<li>
+								<% project_url = '/projects/' + project_activity.project.identifier %>
+								<a href="<%= project_url %>" class="project">
+									<%= project_activity.project.name %>
+								</a>
+								<a href="<%= project_url %>/versions/<%= project_activity.version.id %>"
+									class="version">
+									<%= project_activity.version.name %>
+								</a>
+								<span class="time-spent"><%= '%.2f' % project_activity.hours %></span>
+
+								<ul>
+
+									<% project_activity.issue_activities.each do |issue_activity| %>
+
+										<li>
+											<%= link_to_issue(issue_activity.issue) %>
+											<span class="time-spent"><%= '%.2f' % issue_activity.hours %></span>
+										</li>
+
+									<% end %>
+
+								</ul>
+							</li>
+
+					<% end %>
+
+				</ul>
+
+				<p class="total">
+					<strong>Total: <%= '%.2f' % standup.yesterdays_activity.hours %></strong>
+				</p>
+
+			<% else %>
+
+				<p><em>No logged time</em></p>
+
+			<% end %>
+
+		</div>
+
+<!--
+		<div class="yesterday box">
+			<h3>Yesterday</h3>
+
+			<ul>
+
+				<li>
+				<a href="#" class="project">Redmine</a>
+				<a href="#" class="version">Version 2: Stand-Up</a>
+				<span class="time-spent">2.3</span>
+					<ul>
+						<li><a href="#">Feature #239</a>: Yesterday Section <span class="time-spent">1.0</span></li>
+						<li><a href="#">Feature #240</a>: Display Person's Data (Super really long name dah das gasdfn sadf sdf) <span class="time-spent">1.3</span></li>
+						<li><a href="#">Feature #239</a>: Yesterday Section <span class="time-spent">1.0</span></li>
+					</ul>
+				</li>
+
+				<li>
+					<a href="#">Help Desk</a> <a href="#">Maintenance</a> - 1.5
+					<ul>
+						<li><a href="#">Bug #251</a>: Crazy Watcher Confusion - 1.5</li>
+						<li><a href="#">Bug #231</a>: More Watcher Confusion - 1.5</li>
+					</ul>
+				</li>
+
+			</ul>
+
+		</div>
+-->
+
+		<div class="roadblocks box">
+			<h3>Roadblocks</h3>
+
+			<p><em>Not yet implemented</em></p>
+
+			<!--
+			<ul>
+				<li><a href="#">Bug #251</a>: Crazy Watcher Confusion <span class="time-spent">1.5 / 1.0</span></li>
+				<li><a href="#">Bug #231</a>: Very Watcher Confusion <span class="time-spent">1.5 / 1.0</span></li>
+
+			</ul>
+			-->
+
+		</div>
+
+		<div class="today box">
+			<h3>Today</h3>
+
+			<p><em>Not yet implemented</em></p>
+
+			<!--
+			<ul>
+				<li>
+					<a href="#" class="project">Redmine</a>
+					<a href="#" class="version">Version 2: Stand-Up</a>
+					<span class="issues-left">4</span>
+				</li>
+				<li>
+					<a href="#" class="project">Help Desk</a>
+					<a href="#" class="version">Version 2</a>
+					<span class="issues-left">2</span>
+				</li>
+			</ul>
+			-->
+		</div>
+
+		<hr>
+
+	<% end %>
+
+<% elsif @groups.count > 1 %>
+	
+	<p>Select the team to have a Stand-Up for:</p>
+
+	<ul>
+		
+		<% @groups.each do |group| %>
+			
+			<li><%= link_to group, '?group=' + group.id.to_s %></li>
+			
+		<% end %>
+
+	</ul>
+
+<% end %>

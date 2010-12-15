@@ -1,0 +1,10 @@
+.box { float:left; width: 30%; margin-right: 1em; }
+.box > ul { list-style-type: none; padding: 0 2em; }
+.box > ul > li { margin-bottom: 1em; }
+.box ul ul { opacity: 0.8; list-style-type: disc; }
+.box li { clear: both; }
+.box p { margin: 0 2em 1em 2em; }
+
+.project { font-weight: bold; }
+.time-spent, .issues-left { float:right; }
+.yesterday .total { float: right; clear: both; }
