@@ -10,4 +10,8 @@ class Standup
 		YesterdaysActivity.new(@user, @date)
 	end
 
+	def todays_tasks
+		TodaysTasks.new(@user, @date)
+	end
+
 end

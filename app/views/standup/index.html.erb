@@ -123,22 +123,34 @@
 		<div class="today box">
 			<h3>Today</h3>
 
-			<p><em>Not yet implemented</em></p>
+			<% if standup.todays_tasks.assigned_projects.count > 0 %>
 
-			<!--
-			<ul>
-				<li>
-					<a href="#" class="project">Redmine</a>
-					<a href="#" class="version">Version 2: Stand-Up</a>
-					<span class="issues-left">4</span>
-				</li>
-				<li>
-					<a href="#" class="project">Help Desk</a>
-					<a href="#" class="version">Version 2</a>
-					<span class="issues-left">2</span>
-				</li>
-			</ul>
-			-->
+				<ul>
+
+					<% standup.todays_tasks.assigned_projects.each do |assigned_project| %>
+
+						<li>
+							<% project_url = '/projects/' + assigned_project.project.identifier %>
+							<a href="<%= project_url %>" class="project">
+								<%= assigned_project.project.name %>
+							</a>
+							<a href="<%= project_url %>/versions/<%= assigned_project.version.id %>"
+								class="version">
+								<%= assigned_project.version.name %>
+							</a>
+							<span class="issues-left"><%= assigned_project.issues %></span>
+						</li>
+
+					<% end %>
+
+				</ul>
+
+			<% else %>
+
+				<p><em>No assigned issues</em></p>
+
+			<% end %>
+
 		</div>
 
 		<hr>
