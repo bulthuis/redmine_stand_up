@@ -35,11 +35,10 @@
 					<% standup.yesterdays_activity.project_activities.each do |project_activity| %>
 
 							<li>
-								<% project_url = '/projects/' + project_activity.project.identifier %>
-								<a href="<%= project_url %>" class="project">
+								<a href="/projects/<%= project_activity.project.identifier %>" class="project">
 									<%= project_activity.project.name %>
 								</a>
-								<a href="<%= project_url %>/versions/<%= project_activity.version.id %>"
+								<a href="/versions/show/<%= project_activity.version.id %>"
 									class="version">
 									<%= project_activity.version.name %>
 								</a>
@@ -130,11 +129,10 @@
 					<% standup.todays_tasks.assigned_projects.each do |assigned_project| %>
 
 						<li>
-							<% project_url = '/projects/' + assigned_project.project.identifier %>
-							<a href="<%= project_url %>" class="project">
+							<a href="/projects/<%= assigned_project.project.identifier %>" class="project">
 								<%= assigned_project.project.name %>
 							</a>
-							<a href="<%= project_url %>/versions/<%= assigned_project.version.id %>"
+							<a href="/versions/show/<%= assigned_project.version.id %>"
 								class="version">
 								<%= assigned_project.version.name %>
 							</a>
