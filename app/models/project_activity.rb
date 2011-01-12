@@ -1,13 +1,17 @@
 class ProjectActivity
 	attr_accessor :project, :version, :issue_activities
-
-	def initialize(project, version)
+	
+	def initialize(project, version = nil)
 		@project = project
 		@version = version
 
 		@issue_activities = []
-		version.fixed_issues.each do |issue|
-			if issue.time_entries.count > 0
+		if version.nil?
+			project.issues.each do |issue|
+				@issue_activities << IssueActivity.new(issue)
+			end
+		else
+			version.fixed_issues.each do |issue|
 				@issue_activities << IssueActivity.new(issue)
 			end
 		end

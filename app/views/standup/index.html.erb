@@ -38,10 +38,12 @@
 								<a href="/projects/<%= project_activity.project.identifier %>" class="project">
 									<%= project_activity.project.name %>
 								</a>
-								<a href="/versions/show/<%= project_activity.version.id %>"
-									class="version">
-									<%= project_activity.version.name %>
-								</a>
+								<% if !project_activity.version.nil? %>
+									<a href="/versions/show/<%= project_activity.version.id %>"
+										class="version">
+										<%= project_activity.version.name %>
+									</a>
+								<% end %>
 								<span class="time-spent"><%= '%.2f' % project_activity.hours %></span>
 
 								<ul>
